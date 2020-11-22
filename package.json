@@ -1,0 +1,15 @@
+{
+  "name": "trello-time-track",
+  "version": "1.0.0",
+  "description": "A small time tracker Power-Up for Trello cards",
+  "main": "index.js",
+  "repository": "https://manojsachwani@bitbucket.org/manojsachwani/trello-time-tracking-powerup.git",
+  "author": "Manoj Sachwani",
+  "license": "BSD-3-Clause",
+  "scripts":{
+    "build": "parcel build src/html/*.html"
+  },
+  "devDependencies": {
+    "parcel-bundler": "^1.12.4"
+  }
+}
