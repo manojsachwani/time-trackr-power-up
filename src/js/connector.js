@@ -1,10 +1,8 @@
 var BUTTON_ICON = require('../img/button-icon.svg');
 var BADGE_ICON = require('../img/badge-icon.svg');
 var LOGO_ICON = require('../img/icon-logo.jpg');
-//console.log(LOGO_ICON);
-//console.log(BADGE_ICON);
-BUTTON_ICON="https://time-tracking-power-up.netlify.app/button-icon.dd3b36cf.svg";
-BADGE_ICON="https://time-tracking-power-up.netlify.app/badge-icon.a65bfaa4.svg"
+BUTTON_ICON="https://linktoapp.app/button-icon.dd3b36cf.svg";
+BADGE_ICON="https://linktoapp.app/badge-icon.a65bfaa4.svg"
 
 var secondsToDhms = function(seconds) {
 seconds = Number(seconds);
@@ -30,18 +28,15 @@ var onTimerClick = function(t,opts){
   t.get('card','shared','time_traveller_counter',time_traveller_counter).then(function(data){
 
     time_traveller_counter = data;
-    //console.log("freshly patched",data);
     function startTimerCounter(){
       time_traveller_counter.is_running = true;
       time_traveller_counter.seconds_counter+=1;
       time_traveller_counter.interval_id = interval_id;
       t.set('card','shared','time_traveller_counter',time_traveller_counter);
-      //console.log("inside_interval",time_traveller_counter);
     }
     if(!time_traveller_counter.is_running){
       interval_id = setInterval(startTimerCounter,1000);
     }else{
-      //console.log("stop running here",time_traveller_counter);
       clearInterval(time_traveller_counter.interval_id);
       time_traveller_counter = {
         is_running: false,
@@ -51,15 +46,11 @@ var onTimerClick = function(t,opts){
        t.set('card','shared','time_traveller_counter',time_traveller_counter);
     }
   });
-
 }
 
 window.TrelloPowerUp.initialize({
   'card-badges': function(t,ops){
-    //return an array of card bagdges to cards
     return t.card('all').then(function(card){
-      //console.log(card);
-
         return t.get(card.id,'shared','time_traveller_counter',{
             is_running: false,
             seconds_counter: 0,
@@ -67,16 +58,12 @@ window.TrelloPowerUp.initialize({
           }).then(function(data){
             var timer_count = (data.seconds_counter===0)? "0" : secondsToDhms(data.seconds_counter);
             var badge_color = (data.is_running)? "green" : "sky";
-            //console.log("duration",timer_count);
             return [{
               text: "Duration: "+timer_count,
               color:badge_color,
-
             }];
           });
-
     });
-
   },
   'card-buttons': function(t,opts){
     return t.card('id').then(function(card){
@@ -93,14 +80,10 @@ window.TrelloPowerUp.initialize({
           condition:'always'
         }];
       });
-
     });
-
-
   },
   'card-detail-badges': function(t,opts){
     return t.card('all').then(function(card){
-      //console.log(card);
         return t.get(card.id,'shared','time_traveller_counter',{
             is_running: false,
             seconds_counter: 0,
@@ -108,14 +91,12 @@ window.TrelloPowerUp.initialize({
           }).then(function(data){
             var timer_count = (data.seconds_counter===0)? "0" : secondsToDhms(data.seconds_counter);
             var badge_color = (data.is_running)? "green" : "purple";
-            //console.log("duration",timer_count);
             return [{
               text: "Time Tracked: "+timer_count,
               color: badge_color,
               callback: onTimerClick,
             }];
           });
-
     });
   }
 });
